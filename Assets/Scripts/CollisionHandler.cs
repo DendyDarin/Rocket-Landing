@@ -8,6 +8,9 @@ public class CollisionHandler : MonoBehaviour
     [SerializeField] AudioClip deathSound;
     [SerializeField] AudioClip successSound;
 
+    [SerializeField] ParticleSystem crashParticles;
+    [SerializeField] ParticleSystem successParticles;
+
     // CACHE - e.g. references for readability or speed
     AudioSource audios;
 
@@ -48,6 +51,7 @@ public class CollisionHandler : MonoBehaviour
         // TODO: add sfx
         audios.PlayOneShot(deathSound);
         // TODO: add particles when crashed
+        crashParticles.Play();
         GetComponent<Movement>().enabled = false; // so player can't move when crash
         Invoke("ReloadLevel", invokeDelay); // call method after delay x seconds
     }
@@ -59,6 +63,7 @@ public class CollisionHandler : MonoBehaviour
         // TODO: add sfx
         audios.PlayOneShot(successSound);
         // TODO: add effect when success!
+        successParticles.Play();
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel", invokeDelay);
     }
