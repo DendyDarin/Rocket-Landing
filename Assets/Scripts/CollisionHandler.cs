@@ -12,7 +12,8 @@ public class CollisionHandler : MonoBehaviour
     AudioSource audios;
 
     // STATE - private instances (member) variables
-    
+    bool isTransitioning = false;
+
     void Start()
     {
         audios = GetComponent<AudioSource>();
@@ -21,6 +22,8 @@ public class CollisionHandler : MonoBehaviour
     // Update is called once per frame
 
     void OnCollisionEnter(Collision other) {
+        if(isTransitioning) { return; }
+
         switch (other.gameObject.tag)
         {
             case "Friendly":
@@ -40,6 +43,8 @@ public class CollisionHandler : MonoBehaviour
 
     void StartCrashSequence()
     {
+        isTransitioning = true;
+        audios.Stop(); // to stop other audio upon crash
         // TODO: add sfx
         audios.PlayOneShot(deathSound);
         // TODO: add particles when crashed
@@ -49,6 +54,8 @@ public class CollisionHandler : MonoBehaviour
 
     void StartSuccessSequence()
     {
+        isTransitioning = true;
+        audios.Stop();
         // TODO: add sfx
         audios.PlayOneShot(successSound);
         // TODO: add effect when success!
