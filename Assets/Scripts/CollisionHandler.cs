@@ -3,7 +3,22 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
+    // PARAMETERS - for tuning, typically set in editor
     [SerializeField] float invokeDelay = 1f;
+    [SerializeField] AudioClip deathSound;
+    [SerializeField] AudioClip successSound;
+
+    // CACHE - e.g. references for readability or speed
+    AudioSource audios;
+
+    // STATE - private instances (member) variables
+    
+    void Start()
+    {
+        audios = GetComponent<AudioSource>();
+    }
+
+    // Update is called once per frame
 
     void OnCollisionEnter(Collision other) {
         switch (other.gameObject.tag)
@@ -26,6 +41,7 @@ public class CollisionHandler : MonoBehaviour
     void StartCrashSequence()
     {
         // TODO: add sfx
+        audios.PlayOneShot(deathSound);
         // TODO: add particles when crashed
         GetComponent<Movement>().enabled = false; // so player can't move when crash
         Invoke("ReloadLevel", invokeDelay); // call method after delay x seconds
@@ -34,6 +50,7 @@ public class CollisionHandler : MonoBehaviour
     void StartSuccessSequence()
     {
         // TODO: add sfx
+        audios.PlayOneShot(successSound);
         // TODO: add effect when success!
         GetComponent<Movement>().enabled = false;
         Invoke("LoadNextLevel", invokeDelay);
