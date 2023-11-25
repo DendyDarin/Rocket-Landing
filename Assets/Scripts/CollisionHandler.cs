@@ -16,6 +16,7 @@ public class CollisionHandler : MonoBehaviour
 
     // STATE - private instances (member) variables
     bool isTransitioning = false;
+    bool collisionDisabled = false; // optional: add debug key to disable collision
 
     void Start()
     {
@@ -23,9 +24,27 @@ public class CollisionHandler : MonoBehaviour
     }
 
     // Update is called once per frame
+    // Add Cheat/DebugKey
+    void Update()
+    {
+        RespondToDebugKey();
+    }
+
+    // Optional: add debug key to load next level when press L
+    void RespondToDebugKey()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadNextLevel();
+        }
+        else if(Input.GetKeyDown(KeyCode.C)) // condition for debug key
+        {
+            collisionDisabled = !collisionDisabled;
+        }
+    }
 
     void OnCollisionEnter(Collision other) {
-        if(isTransitioning) { return; }
+        if(isTransitioning || collisionDisabled) { return; } // add debug key condition
 
         switch (other.gameObject.tag)
         {
